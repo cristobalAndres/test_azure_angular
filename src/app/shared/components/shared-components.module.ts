@@ -11,7 +11,6 @@ import { SharedDirectivesModule } from '../directives/shared-directives.module';
 import { LayoutsModule } from './layouts/layouts.module';
 
 const components = [
-  BtnLoadingComponent,
   FeatherIconComponent,
 ];
 

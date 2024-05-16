@@ -75,7 +75,7 @@ blockquote {
   overflow: hidden;
 }
 .separator-breadcrumb {
-  margin-bottom: 2rem;
+  margin-bottom: 1rem;
 }
 @for $i from 1 through 5 {
   .line-height-#{$i} {

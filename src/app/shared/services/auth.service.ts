@@ -1,11 +1,11 @@
-import { Injectable } from "@angular/core";
-import { LocalStoreService } from "./local-store.service";
-import { Router } from "@angular/router";
-import { of } from "rxjs";
-import { delay } from "rxjs/operators";
+import { Injectable } from '@angular/core';
+import { LocalStoreService } from './local-store.service';
+import { Router } from '@angular/router';
+import { of } from 'rxjs';
+import { delay } from 'rxjs/operators';
 
 @Injectable({
-  providedIn: "root"
+  providedIn: 'root'
 })
 export class AuthService {
   //Only for demo purpose
@@ -25,12 +25,12 @@ export class AuthService {
 
   signin(credentials) {
     this.authenticated = true;
-    this.store.setItem("demo_login_status", true);
+    this.store.setItem('demo_login_status', true);
     return of({}).pipe(delay(1500));
   }
   signout() {
     this.authenticated = false;
-    this.store.setItem("demo_login_status", false);
-    this.router.navigateByUrl("/sessions/signin");
+    sessionStorage.removeItem('token');
+    this.router.navigateByUrl('/');
   }
 }

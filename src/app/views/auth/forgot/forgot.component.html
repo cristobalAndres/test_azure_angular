@@ -1,0 +1,39 @@
+<div class="o-hidden" [@animate]="{value:'*',params:{y:'120px',opacity:'0',delay:'100ms', duration: '400ms'}}">
+  <div class="row me-0">
+		<div class="col-md-6 my-auto">
+		
+			<div class="d-flex flex-column" style="fill: var(--bs-vea-1);">
+				<svg xmlns="http://www.w3.org/2000/svg" id="svg-imago" version="1.1" viewBox="0 0 101.86823 90.703979"><path d="M 57.431 36.5493 L 57.431 67.1449 L 55.3304 67.1449 L 50.7803 67.1449 L 39.1252 67.1449 L 57.431 90.7023 L 71.4725 90.7023 L 71.4745 90.7023 L 76.7874 90.7023 C 85.1485 83.6698 93.5069 76.6346 101.868 69.6033 L 101.868 57.694 C 93.507 50.6466 85.1465 43.5979 76.7856 36.5494 L 71.5096 36.5494 L 71.5096 36.5494 Z M 71.5093 50.5417 C 76.8074 54.9424 82.1054 59.3434 87.4041 63.7433 C 82.1059 68.0902 76.8076 72.437 71.5093 76.7836 Z" id="iso-der" /><path d="M 30.3624 0 L 30.3624 0 L 25.081 0 C 16.7201 7.0326 8.36158 14.0677 -1e-05 21.0991 L -1e-05 33.0083 C 8.36155 40.0556 16.722 47.1045 25.0828 54.153 L 30.3939 54.153 L 30.3959 54.153 L 44.4391 54.153 L 44.4391 23.5574 L 46.5906 23.5574 L 52.7012 23.5574 L 62.7835 23.5574 L 44.4391 0.0001 Z M 30.3624 13.9205 L 30.3624 40.1675 C 25.0629 35.7659 19.764 31.3634 14.464 26.9625 C 19.7632 22.6147 25.063 18.2678 30.3624 13.9205 Z" id="iso-izq" /></svg>
+			</div>
+			
+    </div>
+    <div class="col-md-6">
+		
+      <div class="p-4">
+        <div class="mb-4">
+          <h1 class="mb-3 text-white">Reestablecer Contraseña</h1>
+					<p class="text-white">Para continuar ingrese su correo electrónico donde recibirá un enlace para crear su nueva contraseña.</p>
+        </div>
+        <form [formGroup]="forgotPasswordForm" (ngSubmit)="sendEmail()">
+          <div class="form-group">
+            <label for="email" class="text-white">Email</label>
+            <input id="email" class="form-control" type="email" formControlName="email">
+          </div>
+          <div class="form-group">
+            <label for="rol" class="text-white">Indícanos tu rol</label>
+            <select class="form-control" id="rol" formControlName="rol">
+                <option disabled>Selecciona el rol con el que estas registrado</option>
+                <option value="subscriber">Administrador</option>
+                <option value="user">Usuario</option>
+            </select>
+          </div>
+          <btn-loading class="btn btn-g33 w-100 mt-3" [loadingText]="'Estamos enviando tu email'" [disabled]="forgotPasswordForm.invalid">Reestablecer Contraseña</btn-loading>
+        </form>
+        <div class="mt-3">
+          <a href="" class="text-white" routerLink="/"><u>Iniciar sesión</u></a>
+        </div>
+      </div>
+			
+    </div>
+  </div>
+</div>

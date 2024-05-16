@@ -1,4 +1,4 @@
-import { Component, OnInit, HostListener, ViewChildren, QueryList } from '@angular/core';
+import { Component, OnInit, HostListener, ViewChildren, QueryList, inject } from '@angular/core';
 import {
   NavigationService,
   IMenuItem,
@@ -9,6 +9,8 @@ import { Router, NavigationEnd } from '@angular/router';
 
 import { filter } from 'rxjs/operators';
 import { Utils } from '../../../../utils';
+import { PermissionsService } from 'src/app/services/permissions/permissions.service';
+import { jwtDecode } from 'jwt-decode';
 
 @Component({
   selector: 'app-sidebar-large',
@@ -16,18 +18,17 @@ import { Utils } from '../../../../utils';
   styleUrls: ['./sidebar-large.component.scss']
 })
 export class SidebarLargeComponent implements OnInit {
+  private readonly router = inject(Router);
+  permissionsService = inject(PermissionsService);
+  navService = inject(NavigationService);
   selectedItem: IMenuItem;
   nav: IMenuItem[];
-  // @ViewChildren(PerfectScrollbarDirective) psContainers:QueryList<PerfectScrollbarDirective>;
-  // psContainerSecSidebar: PerfectScrollbarDirective;
 
-  constructor(public router: Router, public navService: NavigationService) {
-    // setTimeout(() => {
-    //   this.psContainerSecSidebar = this.psContainers.toArray()[1];
-    // });
+  constructor() {
   }
 
   ngOnInit() {
+    this.permissionsService.getPermissionUserByRoleId(this.getRoleIdToken());
     this.updateSidebar();
     // CLOSE SIDENAV ON ROUTE CHANGE
     this.router.events
@@ -49,13 +50,8 @@ export class SidebarLargeComponent implements OnInit {
     this.navService.sidebarState.childnavOpen = true;
     this.navService.selectedItem = item;
     this.setActiveMainItem(item);
-
-    // Scroll to top secondary sidebar
-    // setTimeout(() => {            
-    //   this.psContainerSecSidebar.update();
-    //   this.psContainerSecSidebar.scrollToTop(0, 400);
-    // });
   }
+
   closeChildNav() {
     this.navService.sidebarState.childnavOpen = false;
     this.setActiveFlag();
@@ -109,6 +105,36 @@ export class SidebarLargeComponent implements OnInit {
     } else {
       this.navService.sidebarState.sidenavOpen = true;
     }
+  }
+
+  getRoleIdToken() {
+    const token = sessionStorage.getItem('token');
+    if (token) {
+      try {
+        const decoded = jwtDecode(token);
+        return decoded['roleId'];
+      } catch (error) {
+        console.error('Error decoding token:', error);
+      }
+    }
+    return null;
+  }
+
+  getLocalCompany() {
+    const company = sessionStorage.getItem('company');
+    if (company) {
+      return true;
+    }
+
+    return false;
+  }
+
+  changeRouteCompany(route: string) {
+    const company = sessionStorage.getItem('company');
+    console.log('---->>>', company);
+    route = route.replace('{{company}}', company);
+
+    return route;
   }
 
   @HostListener('window:resize', ['$event'])

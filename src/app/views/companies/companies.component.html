@@ -1,0 +1,35 @@
+<div class="breadcrumb">
+  <h1>
+    Empresas
+  </h1>
+</div>
+
+<div class="separator-breadcrumb border-top"></div>
+
+<div class="row">
+  <div class="col-md-12">
+    <div class="card-header d-flex justify-content-end">
+      <button type="button" class="btn btn-primary ml-auto mb-2" placement="top"
+        [ngbTooltip]="'Crear Usuario'">
+        
+      </button>
+    </div>
+    <div class="card o-hidden">
+
+      <ngx-datatable class="material fullscreen" [columnMode]="'force'" [headerHeight]="50" [footerHeight]="50"
+      [rowHeight]="50" [rows]="rows" [columns]="columns">
+      <ngx-datatable-column name="Id" prop="id"></ngx-datatable-column>
+      <ngx-datatable-column name="Name" prop="name">
+        <ng-template ngx-datatable-cell-template let-row="row">
+          <a [routerLink]="['/dashboard/companies/home']" (click)="setCompany(row.id)">{{ row.name }}</a>
+        </ng-template>
+      </ngx-datatable-column>
+      <ngx-datatable-column name="Address" prop="address"></ngx-datatable-column>
+      <ngx-datatable-column name="Phone" prop="phone"></ngx-datatable-column>
+      <ngx-datatable-column name="Email" prop="email"></ngx-datatable-column>
+      <ngx-datatable-column name="Actions" prop="actions"></ngx-datatable-column>
+    </ngx-datatable>
+    </div>
+    <router-outlet></router-outlet>
+  </div>
+</div>

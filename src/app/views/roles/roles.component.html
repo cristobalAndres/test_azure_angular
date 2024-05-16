@@ -1,0 +1,54 @@
+<div class="breadcrumb">
+  <h1>
+    Roles
+  </h1>
+</div>
+
+<div class="separator-breadcrumb border-top"></div>
+<form [formGroup]="moduleForm">
+  <div class="col">
+    <div class="card card-icon-bg card-icon-bg-primary o-hidden mb-4">
+      <div class="card-body text-center">
+        <div class="form-group">
+          <label for="firstName">Seleccione el rol</label>
+          <select class="form-control" id="rol" formControlName="roleId" (change)="changeRole()">
+            <option value="null" disabled>Seleccione el role</option>
+            @for (item of roles; track $index) {
+            <option [value]="+item.id">{{ item.name }}</option>
+            }
+          </select>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    @for (item of permissionIds.controls; track item.get('id').value; let i = $index) {
+    <div class="col-md-3 col-sm-6" formArrayName="permissionIds">
+      <div class="card card-icon-bg card-icon-bg-primary o-hidden mb-4" [formGroupName]="i">
+        <div class="card-header d-flex">
+          <h5 class="text-muted">{{item.get('name').value}}</h5>
+          <div class="separator-breadcrumb border-top"></div>
+        </div>
+        <div class="card-body" formArrayName="permissions">
+          <ul class="list-group">
+            @for (subItem of getSubItems(i).controls; track subItem.get('id').value; let j = $index) {
+            <li class="list-group-item" [formGroupName]="j">
+              <input class="form-check-input me-2" type="checkbox" id="{{ 'check'+i+''+j }}" formControlName="checked">
+              <label class="form-check-label" for="{{ 'check'+i+''+j }}">{{ subItem.get('name').value }}</label>
+            </li>
+            }
+          </ul>
+        </div>
+      </div>
+    </div>
+    }
+  </div>
+</form>
+<div class="row">
+  <div class="col text-end">
+    <button type="button" class="btn btn-primary ml-auto mb-2"  placement="top"
+        [ngbTooltip]="'Actualizar permisos'" (click)="onSubmit()">
+        Actualizar Permisos
+      </button>
+  </div>
+</div>

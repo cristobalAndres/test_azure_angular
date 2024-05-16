@@ -1,7 +1,10 @@
+import { CommonModule } from '@angular/common';
 import { Component, OnInit, Input } from '@angular/core';
 
 @Component({
   selector: 'btn-loading',
+  standalone: true,
+  imports: [CommonModule],
   templateUrl: './btn-loading.component.html',
   styleUrls: ['./btn-loading.component.scss']
 })
@@ -10,6 +13,7 @@ export class BtnLoadingComponent implements OnInit {
   @Input('btnClass') btnClass: string;
   @Input('loadingText') loadingText = 'Please wait';
   @Input('type') type: 'button' | 'submit' = 'submit';
+  @Input('disabled') disabled: boolean;
 
   constructor() { }
 
