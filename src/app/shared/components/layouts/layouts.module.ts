@@ -14,15 +14,16 @@ import { FooterComponent } from '../footer/footer.component';
 import { CustomizerComponent } from '../customizer/customizer.component';
 import { SharedDirectivesModule } from '../../directives/shared-directives.module';
 import { FormsModule } from '@angular/forms';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 const components = [
-    HeaderSidebarLargeComponent,
-    SidebarLargeComponent,
-    FooterComponent,
-    CustomizerComponent,
-    AdminLayoutSidebarLargeComponent,
-    AuthLayoutComponent,
-    BlankLayoutComponent,
+  HeaderSidebarLargeComponent,
+  SidebarLargeComponent,
+  FooterComponent,
+  CustomizerComponent,
+  AdminLayoutSidebarLargeComponent,
+  AuthLayoutComponent,
+  BlankLayoutComponent,
 ];
 
 @NgModule({
@@ -33,7 +34,8 @@ const components = [
     SearchModule,
     SharedPipesModule,
     SharedDirectivesModule,
-    CommonModule
+    CommonModule,
+    FontAwesomeModule
   ],
   declarations: components,
   exports: components

@@ -37,12 +37,11 @@ export class PermissionsService {
     );
   }
 
-  getPermissionUserByRoleId(roleId: number): void {
+  getPermissionUserByRoleId(roleId?: number): void {
     const token = sessionStorage.getItem('token');
     if (token) {
       try {
         const decoded = jwtDecode(token);
-        console.log('PERMISSIONS: ', decoded['permissions']);
         this.permissions = new Set(decoded['permissions']);
         this.permissionsSource.next(new Set(decoded['permissions']));
         this.permissionsLoaded.next(true);
@@ -74,6 +73,7 @@ export class PermissionsService {
 
   // Verifica si el usuario tiene el permiso necesario
   hasPermissionRoute(permission: string): Observable<boolean> {
+    this.getPermissionUserByRoleId();
     return this.permissions$.pipe(
       map(permissions => permissions.has(permission))
     );

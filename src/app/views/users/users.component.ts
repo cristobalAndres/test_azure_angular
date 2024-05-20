@@ -20,6 +20,9 @@ import { SelectDropDownModule } from 'ngx-select-dropdown';
 import { FormsModule } from '@angular/forms'; // Importa FormsModule
 import { PermissionsService } from 'src/app/services/permissions/permissions.service';
 import { SharedDirectivesModule } from 'src/app/shared/directives/shared-directives.module';
+import { CompaniesService } from 'src/app/services/companies/companies.service';
+import { TokenService } from 'src/app/services/token/token.service';
+import { Company, CompanySelect } from 'src/app/shared/models/companies/companies.dto';
 
 @Component({
   selector: 'app-users',
@@ -47,6 +50,8 @@ export class UsersComponent {
   private readonly toastr = inject(ToastrService);
   private readonly formBuilder = inject(FormBuilder);
   private readonly rolesService = inject(RolesService);
+  private readonly companiesService = inject(CompaniesService);
+  private readonly tokenService = inject(TokenService);
   permissionsService = inject(PermissionsService);
   singleSelect = [];
   config = {
@@ -56,34 +61,9 @@ export class UsersComponent {
     height: '250px',
     enableSelectAll: true,
     searchBy: ['name'],
-
   };
 
-  dataModel = [{
-    id: 1,
-    name: 'Empresa 1',
-    email: 'asdasd'
-  }, {
-    id: 2,
-    name: 'Empresa 2',
-    email: 'asdasd'
-  }, {
-    id: 3,
-    name: 'Empresa 3',
-    email: 'asdasd'
-  }, {
-    id: 4,
-    name: 'Empresa 4',
-    email: 'asdasd'
-  }, {
-    id: 5,
-    name: 'Empresa 5',
-    email: 'asdasd'
-  }, {
-    id: 6,
-    name: 'Empresa 6',
-    email: 'asdasd'
-  }];
+  dataModel: CompanySelect[] = [];
 
   user: UserDto;
   roles: RolesDto[] = [];
@@ -108,7 +88,13 @@ export class UsersComponent {
   userForm: FormGroup;
 
   ngOnInit() {
-    // sessionStorage.removeItem('company');
+    const userId = this.tokenService.getDataToken('id');
+    this.companiesService.getCompaniesByUserId(+userId).subscribe((data) => {
+      this.dataModel = data.map((company) => ({
+        id: company.id,
+        name: company.name
+      }));
+    });
     this.userForm = this.formBuilder.group({
       name: [null, Validators.required],
       lastName: [null, Validators.required],
@@ -145,6 +131,7 @@ export class UsersComponent {
   open(content, data?: UserDto, action?: 'CREATE' | 'EDIT' | 'DELETE') {
     this.user = null;
     this.userForm.reset();
+    this.singleSelect = [];
     this.actionSelected = action;
     if (data) {
       this.user = data;
@@ -152,6 +139,10 @@ export class UsersComponent {
 
     if (action === 'EDIT') {
       this.loadUserEdit(data);
+      this.singleSelect = data.companies.map((company) => ({
+        id: company.id,
+        name: company.name
+      }));
     }
 
     this.modalService.open(content, { backdrop: 'static', keyboard: false })

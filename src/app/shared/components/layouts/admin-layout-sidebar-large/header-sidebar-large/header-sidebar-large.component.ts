@@ -1,7 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { NavigationService } from '../../../../services/navigation.service';
 import { SearchService } from '../../../../services/search.service';
 import { AuthService } from '../../../../services/auth.service';
+import { TokenService } from 'src/app/services/token/token.service';
+import { faBuilding } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-header-sidebar-large',
@@ -9,8 +11,9 @@ import { AuthService } from '../../../../services/auth.service';
   styleUrls: ['./header-sidebar-large.component.scss']
 })
 export class HeaderSidebarLargeComponent implements OnInit {
-
-
+  private readonly tokenService = inject(TokenService);
+  faBuilding = faBuilding;
+  company = null;
   constructor(
     private navService: NavigationService,
     public searchService: SearchService,
@@ -19,6 +22,7 @@ export class HeaderSidebarLargeComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.getCompany();
   }
 
   toggelSidebar() {
@@ -43,7 +47,19 @@ export class HeaderSidebarLargeComponent implements OnInit {
     }
   }
 
+  getCompany() {
+    this.company = JSON.parse(sessionStorage.getItem('company'));
+    return this.company;
+  }
+
+  getNameLastName() {
+    const name = this.tokenService.getDataToken('name');
+    const lastName = this.tokenService.getDataToken('lastName');
+    return `${name} ${lastName}`;
+  }
+
   signout() {
+    sessionStorage.clear();
     this.auth.signout();
   }
 

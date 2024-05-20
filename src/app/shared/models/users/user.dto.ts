@@ -7,4 +7,10 @@ export type UserDto = Readonly<{
   roleId: number;
   createdAt: string;
   updatedAt: string;
+  companies?: UserCompanyDto[];
+}>
+
+export type UserCompanyDto = Readonly<{
+  id: number;
+  name: string;
 }>

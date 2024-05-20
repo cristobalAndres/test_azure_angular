@@ -108,8 +108,4 @@ export class NavigationService {
   menuItems = new BehaviorSubject<IMenuItem[]>(this.defaultMenu);
   // navigation component has subscribed to this Observable
   menuItems$ = this.menuItems.asObservable();
-
-  getCompanyMenu() {
-    return sessionStorage.getItem('company');
-  }
 }

@@ -6,6 +6,7 @@ import { AdminLayoutSidebarLargeComponent } from
 import { AuthLayoutComponent } from './shared/components/layouts/auth-layout/auth-layout.component';
 import { AuthGuard } from './services/auth/auth.guard';
 import { PermissionGuard } from './services/permissions/permission.guard';
+import { CompanyGuard } from './services/companies/companies.guard';
 
 const adminRoutes: Routes = [
   {
@@ -33,15 +34,15 @@ const adminRoutes: Routes = [
           .then(m => m.CompaniesComponent),
       },
       {
-        path: 'home',
-        canActivate: [PermissionGuard],
+        path: ':id',
+        canActivate: [CompanyGuard, PermissionGuard],
         loadComponent: () => import('./views/home-companies/home-companies.component')
           .then(m => m.HomeCompaniesComponent),
         data: { permission: '[COMPANIES][MODULE]' }
       },
       {
-        path: 'taxes',
-        canActivate: [PermissionGuard],
+        path: ':id/taxes',
+        canActivate: [CompanyGuard, PermissionGuard],
         loadComponent: () => import('./views/taxes/taxes.component').then(m => m.TaxesComponent),
         data: { permission: '[COMPANIES][SUB-TAXES]' }
       }
@@ -78,7 +79,10 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes, { useHash: true })],
+  imports: [RouterModule.forRoot(routes, {
+    useHash: true,
+    bindToComponentInputs: true
+  })],
   exports: [RouterModule]
 })
 export class AppRoutingModule {}

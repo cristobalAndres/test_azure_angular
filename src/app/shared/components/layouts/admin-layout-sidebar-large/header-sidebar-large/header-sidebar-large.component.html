@@ -1,32 +1,39 @@
 <div class="main-header">
-    <div class="logo">
-        <img src="./assets/images/logo.png" alt="">
-    </div>
+	<div class="logo">
+		<img src="./assets/images/logo.png" alt="">
+	</div>
 
-    <div class="menu-toggle" (click)="toggelSidebar()">
-        <div></div>
-        <div></div>
-        <div></div>
-    </div>
+	<div class="menu-toggle" (click)="toggelSidebar()">
+		<div></div>
+		<div></div>
+		<div></div>
+	</div>
+
+	<div class="d-flex align-items-center">
+		@if (getCompany()) {
+			<fa-icon class="me-1" [icon]="faBuilding" [size]="'2x'"></fa-icon>
+			<h3 class="mt-2">{{getCompany().name}}</h3>
+		}
+	</div>
 
 
-    <div style="margin: auto"></div>
+	<div style="margin: auto"></div>
 
-    <div class="header-part-right">
+	<div class="header-part-right">
 
-        <div ngbDropdown [placement]="'bottom-right'" class="user col align-self-end">
-            <img src="./assets/images/faces/1.jpg" id="userDropdown" ngbDropdownToggle alt="">
+		<div ngbDropdown [placement]="'bottom-right'" class="user col align-self-end">
+			<img src="./assets/images/faces/1.jpg" id="userDropdown" ngbDropdownToggle alt="">
 
-            <div ngbDropdownMenu aria-labelledby="userDropdown" class="header-account-dropdown">
-                <div class="dropdown-header">
-                    <i class="i-Lock-User me-1"></i> Timothy Carlson
-                </div>
-                <button class="dropdown-item">Account settings</button>
-                <button class="dropdown-item">Billing history</button>
-                <button class="dropdown-item" (click)="signout()">Sign out</button>
-            </div>
-        </div>
+			<div ngbDropdownMenu aria-labelledby="userDropdown" class="header-account-dropdown">
+				<div class="dropdown-header">
+					<i class="i-Lock-User me-1"></i> {{getNameLastName()}}
+				</div>
+				<button class="dropdown-item">Account settings</button>
+				<button class="dropdown-item">Billing history</button>
+				<button class="dropdown-item" (click)="signout()">Sign out</button>
+			</div>
+		</div>
 
-    </div>
+	</div>
 
 </div>

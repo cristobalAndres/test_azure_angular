@@ -1,8 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 import { CommonModule } from '@angular/common'; // Importa CommonModule
 import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { RouterModule } from '@angular/router';  // Importa RouterModule
+import { CompaniesService } from 'src/app/services/companies/companies.service';
+import { TokenService } from 'src/app/services/token/token.service';
 
 @Component({
   selector: 'app-companies',
@@ -12,6 +14,8 @@ import { RouterModule } from '@angular/router';  // Importa RouterModule
   styleUrl: './companies.component.scss'
 })
 export class CompaniesComponent {
+  private readonly companiesService = inject(CompaniesService);
+  private readonly tokenService = inject(TokenService);
   rows = [];
   columns = [];
 
@@ -25,76 +29,20 @@ export class CompaniesComponent {
     this.columns = [
       { name: 'ID', prop: 'id' },
       { name: 'Name', prop: 'name' },
-      { name: 'Address', prop: 'address' },
-      { name: 'Phone', prop: 'phone' },
-      { name: 'Email', prop: 'email' },
       { name: 'Actions', prop: 'actions' }
     ];
   }
 
   ngOnInit() {
     sessionStorage.removeItem('company');
-    this.rows = [
-      {
-        id: 1,
-        name: 'Company 1',
-        address: 'Address 1',
-        phone: '1234567890',
-        email: 'company@gmail.com',
-      },
-      {
-        id: 2,
-        name: 'Company 1',
-        address: 'Address 1',
-        phone: '1234567890',
-        email: 'company@gmail.com',
-      },
-      {
-        id: 3,
-        name: 'Company 1',
-        address: 'Address 1',
-        phone: '1234567890',
-        email: 'company@gmail.com',
-      },
-      {
-        id: 4,
-        name: 'Company 1',
-        address: 'Address 1',
-        phone: '1234567890',
-        email: 'company@gmail.com',
-      },
-      {
-        id: 5,
-        name: 'Company 2',
-        address: 'Address 1',
-        phone: '1234567890',
-        email: 'company@gmail.com',
-      },
-      {
-        id: 6,
-        name: 'Company 3',
-        address: 'Address 1',
-        phone: '1234567890',
-        email: 'company@gmail.com',
-      },
-      {
-        id: 7,
-        name: 'Company 4',
-        address: 'Address 1',
-        phone: '1234567890',
-        email: 'company@gmail.com',
-      },
-      {
-        id: 8,
-        name: 'Company 5',
-        address: 'Address 1',
-        phone: '1234567890',
-        email: 'company@gmail.com',
-      },
-    ];
+    const userId = this.tokenService.getDataToken('id');
+    this.companiesService.getCompaniesByUserId(+userId).subscribe((data) => {
+      this.rows = data;
+    });
   }
 
-  setCompany(company: string): void {
-    sessionStorage.setItem('company', company);
+  setCompany(company: any): void {
+    sessionStorage.setItem('company', JSON.stringify(company));
+    console.log('company:', JSON.parse(sessionStorage.getItem('company')));
   }
 }

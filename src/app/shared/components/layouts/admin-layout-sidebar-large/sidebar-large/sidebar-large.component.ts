@@ -1,16 +1,20 @@
-import { Component, OnInit, HostListener, ViewChildren, QueryList, inject } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  HostListener, ViewChildren, QueryList, inject, Input } from '@angular/core';
 import {
   NavigationService,
   IMenuItem,
   IChildItem
 } from '../../../../services/navigation.service';
-import { Router, NavigationEnd } from '@angular/router';
+import { Router, NavigationEnd, ActivatedRoute } from '@angular/router';
 // import { PerfectScrollbarDirective } from 'ngx-perfect-scrollbar';
 
 import { filter } from 'rxjs/operators';
 import { Utils } from '../../../../utils';
 import { PermissionsService } from 'src/app/services/permissions/permissions.service';
 import { jwtDecode } from 'jwt-decode';
+import { TokenService } from 'src/app/services/token/token.service';
 
 @Component({
   selector: 'app-sidebar-large',
@@ -19,16 +23,39 @@ import { jwtDecode } from 'jwt-decode';
 })
 export class SidebarLargeComponent implements OnInit {
   private readonly router = inject(Router);
+  private readonly route = inject(ActivatedRoute);
+  private readonly tokenService = inject(TokenService);
   permissionsService = inject(PermissionsService);
   navService = inject(NavigationService);
   selectedItem: IMenuItem;
   nav: IMenuItem[];
+  idCompany: number;
 
   constructor() {
   }
 
   ngOnInit() {
-    this.permissionsService.getPermissionUserByRoleId(this.getRoleIdToken());
+    // this.route.parent.children.forEach(child => {
+    //   child.children.forEach(grandchild => {
+    //     grandchild.children.forEach(grandgrandchild => {
+    //       console.log('Child ID:', grandgrandchild.snapshot.paramMap.get('id'));
+    //     });
+    //   });
+    // });
+
+    let currentRoute = this.route;
+
+    while (currentRoute.firstChild) {
+      currentRoute = currentRoute.firstChild;
+    }
+
+    // Obtener el parámetro 'id' de la ruta más profunda
+    this.idCompany = +currentRoute.snapshot.paramMap.get('id');
+
+    // Luego, accedemos a la ruta nieta (grandchild)
+    // this.route.paramMap.subscribe(params => {
+    //   console.log('Grandchild ID:', params.get('id'));
+    // });
     this.updateSidebar();
     // CLOSE SIDENAV ON ROUTE CHANGE
     this.router.events
@@ -108,16 +135,7 @@ export class SidebarLargeComponent implements OnInit {
   }
 
   getRoleIdToken() {
-    const token = sessionStorage.getItem('token');
-    if (token) {
-      try {
-        const decoded = jwtDecode(token);
-        return decoded['roleId'];
-      } catch (error) {
-        console.error('Error decoding token:', error);
-      }
-    }
-    return null;
+    return this.tokenService.getDataToken('roleId');
   }
 
   getLocalCompany() {
@@ -130,9 +148,10 @@ export class SidebarLargeComponent implements OnInit {
   }
 
   changeRouteCompany(route: string) {
-    const company = sessionStorage.getItem('company');
-    console.log('---->>>', company);
-    route = route.replace('{{company}}', company);
+    const company = JSON.parse(sessionStorage.getItem('company'));
+    if (company) {
+      route = route.replace('{{company}}', `${company.id}`);
+    }
 
     return route;
   }

@@ -21,12 +21,9 @@
       <ngx-datatable-column name="Id" prop="id"></ngx-datatable-column>
       <ngx-datatable-column name="Name" prop="name">
         <ng-template ngx-datatable-cell-template let-row="row">
-          <a [routerLink]="['/dashboard/companies/home']" (click)="setCompany(row.id)">{{ row.name }}</a>
+          <a [routerLink]="['/dashboard/companies', row.id]" (click)="setCompany(row)">{{ row.name }}</a>
         </ng-template>
       </ngx-datatable-column>
-      <ngx-datatable-column name="Address" prop="address"></ngx-datatable-column>
-      <ngx-datatable-column name="Phone" prop="phone"></ngx-datatable-column>
-      <ngx-datatable-column name="Email" prop="email"></ngx-datatable-column>
       <ngx-datatable-column name="Actions" prop="actions"></ngx-datatable-column>
     </ngx-datatable>
     </div>

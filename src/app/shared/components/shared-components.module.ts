@@ -9,6 +9,7 @@ import { SearchModule } from './search/search.module';
 import { SharedDirectivesModule } from '../directives/shared-directives.module';
 // import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
 import { LayoutsModule } from './layouts/layouts.module';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 const components = [
   FeatherIconComponent,
@@ -22,7 +23,7 @@ const components = [
     SharedPipesModule,
     SharedDirectivesModule,
     SearchModule,
-    // PerfectScrollbarModule,
+    FontAwesomeModule,
     NgbModule
   ],
   declarations: components,

@@ -13,6 +13,8 @@ export class HasPermissionDirective {
 
   @Input() set appHasPermission(permission: string) {
     this.viewContainer.clear();
+    console.log('PERMISSION: ', permission);
+    console.log('HAS PERMISSION: ', this.permissionsService.hasPermission(permission));
     if (this.permissionsService.hasPermission(permission)) {
       this.viewContainer.createEmbeddedView(this.templateRef);
     } else {

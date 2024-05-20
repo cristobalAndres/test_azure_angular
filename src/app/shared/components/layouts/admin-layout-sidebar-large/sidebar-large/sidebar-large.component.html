@@ -61,9 +61,10 @@
   <ul class="childNav" appDropdown>
     <li *ngFor="let item of parentItem?.sub" appDropdownLink class="nav-item">
       @if(!item.disabled && (item.permission ? permissionsService.hasPermission(item.permission) : true)) {
-      <a routerLink="{{ item.state }}" *ngIf="item.type === 'link'" class="" routerLinkActive="open">
+      <a routerLink="{{ changeRouteCompany(item.state) }}" *ngIf="item.type === 'link'" class="" routerLinkActive="open">
         <i *ngIf="item.icon" [class]="'nav-icon ' + item.icon"></i>
         <span class="item-name lvl1">{{ item.name }}</span>
+        
       </a>
 
       <div *ngIf="item.type === 'dropDown'">
